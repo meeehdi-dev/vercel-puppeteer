@@ -25,7 +25,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   await page.setContent(req.body, {
     waitUntil: ["networkidle0", "domcontentloaded"],
   });
-  await page.evaluateHandle("document.fonts.ready");
+  await page.waitForFunction("document.fonts.ready");
+  await page.screenshot(); // possible fix for fonts (https://github.com/puppeteer/puppeteer/issues/422#issuecomment-1059759640)
   const buffer = await page.pdf({
     format: "a4",
     printBackground: true,
