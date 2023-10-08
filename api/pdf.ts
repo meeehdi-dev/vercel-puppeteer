@@ -1,6 +1,27 @@
+import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { fromEnv } from "@aws-sdk/credential-providers";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import chromium from "@sparticuz/chromium-min";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import puppeteer from "puppeteer-core";
+
+function getExecutablePath(): string | Promise<string> | undefined {
+  if (process.env.AWS_S3_BUCKET && process.env.AWS_S3_KEY) {
+    const s3Client = new S3Client({
+      region: process.env.AWS_S3_REGION,
+      credentials: fromEnv(),
+    });
+
+    const command = new GetObjectCommand({
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: process.env.AWS_S3_KEY,
+    });
+    return getSignedUrl(s3Client, command);
+  } else if (process.env.CHROMIUM_PATH) {
+    return process.env.CHROMIUM_PATH;
+  }
+  return undefined;
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
@@ -15,10 +36,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(401).send("Unauthorized");
   }
 
+  const executablePath = await getExecutablePath();
+
+  if (!executablePath) {
+    return res.status(500).send("Internal Server Error");
+  }
+
   const browser = await puppeteer.launch({
     args: [...chromium.args, "--hide-scrollbars", "--font-render-hinting=none"],
     defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath(process.env.CHROMIUM_PATH),
+    executablePath: await chromium.executablePath(executablePath),
     headless: chromium.headless,
   });
   const page = await browser.newPage();
