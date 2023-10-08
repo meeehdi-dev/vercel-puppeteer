@@ -2,8 +2,8 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "esnext",
-    "moduleResolution": "node10",
-    "verbatimModuleSyntax": true,
+    "moduleResolution": "node",
+    // "verbatimModuleSyntax": true,
     "esModuleInterop": true, 
     "forceConsistentCasingInFileNames": true,
     "strict": true,
