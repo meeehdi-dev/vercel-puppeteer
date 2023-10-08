@@ -6,7 +6,7 @@ Vercel Puppeteer is a simple vercel/node project allowing to use puppeteer with 
 
 ## Dependencies
 
-chromium-min: [Github](https://github.com/sparticuz/chromium-min) by [Sparticuz](https://github.com/Sparticuz)  
+chromium-min: [Github](https://github.com/sparticuz/chromium) by [Sparticuz](https://github.com/Sparticuz)  
 puppeteer-core: [Github](https://github.com/puppeteer/puppeteer)
 
 You'll also need to host a chromium-pack, downloadable via Sparticuz's [chromium releases](https://github.com/Sparticuz/chromium/releases). I personally use AWS S3. Just make sure it's a fast delivery service to avoid any timeout on your serverless function.
@@ -24,8 +24,15 @@ pnpm i
 ```
 Set up your environment variables.
 ```
-TOKEN=XXX
-CHROMIUM_PATH=https://storage.example.org/chromium-pack.tar
+TOKEN="XXX"
+# Public path to chromium pack
+CHROMIUM_PATH="https://storage.example.org/chromium-pack.tar"
+# or if using a private S3 bucket
+AWS_S3_REGION="eu-west-3"
+AWS_S3_BUCKET="private-bucket"
+AWS_S3_KEY="chromium-pack.tar"
+AWS_ACCESS_KEY_ID="KEY_ID"
+AWS_SECRET_ACCESS_KEY="ACCESS_KEY"
 ```
 Deploy using Vercel CLI (don't forget to set the env vars in the dashboard).
 ```
