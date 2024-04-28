@@ -7,6 +7,7 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
+    "@types/node": "^20.12.7",
     "@typescript-eslint/eslint-plugin": "^7.7.1",
     "@typescript-eslint/parser": "^7.7.1",
     "@vercel/node": "^3.0.27",
