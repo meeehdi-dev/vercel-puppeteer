@@ -24,6 +24,10 @@ function getExecutablePath(): string | Promise<string> | undefined {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method === "GET") {
+    return res.status(200).send("ok"); // warmup
+  }
+
   if (req.method !== "POST") {
     return res.status(405).send("Method Not Allowed");
   }
