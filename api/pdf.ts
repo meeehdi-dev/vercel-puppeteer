@@ -5,8 +5,6 @@ import chromium from "@sparticuz/chromium-min";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import puppeteer from "puppeteer-core";
 
-export const maxDuration = 60;
-
 function getExecutablePath(): string | Promise<string> | undefined {
   if (process.env.AWS_S3_BUCKET && process.env.AWS_S3_KEY) {
     const s3Client = new S3Client({
