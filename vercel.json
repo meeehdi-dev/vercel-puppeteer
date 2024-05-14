@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/pdf.ts": {
+      "maxDuration": 60
+    }
+  }
+}
